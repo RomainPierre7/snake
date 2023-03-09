@@ -11,6 +11,12 @@ int bestScore = 0;
 int previousScore = 0;
 
 int main(){
+    if (!sf::Shader::isAvailable()) {
+        std::cout << "Error: SFML library doesn't install on your system" << std::endl;
+        std::cout << "Please download it on https://www.sfml-dev.org/ and install it" << std::endl;
+        return 1;
+    }
+
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Snake");
 
     std::ifstream file("data/best_score.txt");
