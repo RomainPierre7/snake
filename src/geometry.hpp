@@ -18,4 +18,10 @@ enum Direction{
 #define SNAKE 1
 #define FOOD 2
 
+#define QUIT 0
+#define PLAY 1
+
+extern int bestScore;
+extern int previousScore;
+
 #endif

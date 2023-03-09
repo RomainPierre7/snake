@@ -10,4 +10,4 @@ app: $(OBJ)
 	./app
 
 clean:
-	rm -f src/*.o
+	rm -f src/*.o data/best_score.txt app

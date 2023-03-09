@@ -10,4 +10,6 @@ void updateView(sf::RenderWindow &window, std::array<std::array<int, GRID_WIDTH>
 
 void pauseGame(sf::RenderWindow &window);
 
+int menu(sf::RenderWindow &window);
+
 #endif

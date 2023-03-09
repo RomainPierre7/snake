@@ -21,7 +21,7 @@ void updateView(sf::RenderWindow &window, std::array<std::array<int, GRID_WIDTH>
 
 void pauseGame(sf::RenderWindow &window){
     sf::Font font;
-    if (!font.loadFromFile("src/arial.ttf"))
+    if (!font.loadFromFile("data/arial.ttf"))
         return;
     sf::Text text;
     text.setFont(font);
@@ -53,4 +53,37 @@ void pauseGame(sf::RenderWindow &window){
         window.draw(text);
         window.display();
     }
+}
+
+int menu(sf::RenderWindow &window){
+    sf::Font font;
+    if (!font.loadFromFile("data/arial.ttf"))
+        return -1;
+    sf::Text text;
+    text.setFont(font);
+    text.setString("Snake\n\npress Enter to play\npress Escape to quit\n\nBest score: " + std::to_string(bestScore) + "\nPrevious score: " + std::to_string(previousScore));
+    text.setCharacterSize(50);
+    text.setFillColor(sf::Color::White);
+    text.setStyle(sf::Text::Bold);
+    text.setPosition(window.getSize().x / 2 - text.getGlobalBounds().width / 2, window.getSize().y / 2 - text.getGlobalBounds().height / 2);
+    while (window.isOpen()){
+        sf::Event event;
+        while (window.pollEvent(event)){
+            if (event.type == sf::Event::Closed)
+                return QUIT;
+
+            if (event.type == sf::Event::KeyPressed){
+                if (event.key.code == sf::Keyboard::Escape){
+                    return QUIT;
+                }
+                if (event.key.code == sf::Keyboard::Enter){
+                    return PLAY;
+                }
+            }
+        }
+        window.clear();
+        window.draw(text);
+        window.display();
+    }
+    return QUIT;
 }

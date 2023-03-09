@@ -1,8 +1,10 @@
 #include <iostream>
+#include <fstream>
 #include <array>
 #include "geometry.hpp"
 #include "snake.hpp"
 #include "play.hpp"
+#include "view.hpp"
 
 void newFood(std::array<std::array<int, GRID_WIDTH>, GRID_HEIGHT>& map){
     int x = rand() % GRID_WIDTH;
@@ -23,7 +25,7 @@ bool gameOver(struct Snake *snake, std::array<std::array<int, GRID_WIDTH>, GRID_
     return false;
 }
 
-int play(struct Snake *snake, std::array<std::array<int, GRID_WIDTH>, GRID_HEIGHT>& map){
+int play(struct Snake *snake, std::array<std::array<int, GRID_WIDTH>, GRID_HEIGHT>& map, int &score){
     node *head = getHead(snake);
     node *newHead = new node;
     newHead->x = head->x;
@@ -50,7 +52,74 @@ int play(struct Snake *snake, std::array<std::array<int, GRID_WIDTH>, GRID_HEIGH
         removeTail(snake);
     } else {
         newFood(map);
+        score++;
     }
     map[newHead->x][newHead->y] = SNAKE;
     return GAME_CONTINUE;
+}
+
+void playGame(sf::RenderWindow &window){
+    std::array<std::array<int, GRID_WIDTH>, GRID_HEIGHT> map = {};
+    struct Snake *snake = createSnake(0, 0, DOWN);
+    map[0][0] = SNAKE;
+    newFood(map);
+
+    int score = 0;
+
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+
+            if (event.type == sf::Event::KeyPressed)
+            {
+                if (event.key.code == sf::Keyboard::Escape)
+                    pauseGame(window);
+
+                if (event.key.code == sf::Keyboard::Up)
+                    if (getDirection(snake) != DOWN)
+                        setDirection(snake, UP);
+                if (event.key.code == sf::Keyboard::Down)
+                    if (getDirection(snake) != UP)
+                        setDirection(snake, DOWN);
+                if (event.key.code == sf::Keyboard::Left)
+                    if (getDirection(snake) != RIGHT)
+                        setDirection(snake, LEFT);
+                if (event.key.code == sf::Keyboard::Right)
+                    if (getDirection(snake) != LEFT)
+                        setDirection(snake, RIGHT);
+            }
+        }
+
+        sf::sleep(sf::milliseconds(120));
+        
+        if (play(snake, map, score) == GAME_OVER){
+            break;
+        }
+        window.setTitle("Snake - Score: " + std::to_string(score));
+
+        window.clear();
+        updateView(window, map);
+        window.display();
+    }
+    destroySnake(snake);
+    
+    if (score > bestScore){
+        bestScore = score;
+        std::ofstream file("data/best_score.txt");
+        file << bestScore;
+        file.close();
+    }
+    previousScore = score;
+
+    switch(menu(window)){
+        case PLAY:
+            playGame(window);
+            break;
+        case QUIT:
+            break;
+    }
 }
