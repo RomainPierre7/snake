@@ -1,8 +1,19 @@
 #include <SFML/Graphics.hpp>
+#include <array>
+#include <iostream>
+#include "geometry.hpp"
+#include "snake.hpp"
+#include "play.hpp"
+#include "view.hpp"
+
 
 int main(){
-    sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-    sf::RenderWindow window(sf::VideoMode(desktop.width, desktop.height), "Snake");
+    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Snake");
+
+    std::array<std::array<int, GRID_WIDTH>, GRID_HEIGHT> map = {};
+    struct Snake *snake = createSnake(0, 0, DOWN);
+    map[0][0] = SNAKE;
+    newFood(map);
 
     while (window.isOpen())
     {
@@ -15,13 +26,35 @@ int main(){
             if (event.type == sf::Event::KeyPressed)
             {
                 if (event.key.code == sf::Keyboard::Escape)
-                    window.close();
+                    pauseGame(window);
+
+                if (event.key.code == sf::Keyboard::Up)
+                    if (getDirection(snake) != DOWN)
+                        setDirection(snake, UP);
+                if (event.key.code == sf::Keyboard::Down)
+                    if (getDirection(snake) != UP)
+                        setDirection(snake, DOWN);
+                if (event.key.code == sf::Keyboard::Left)
+                    if (getDirection(snake) != RIGHT)
+                        setDirection(snake, LEFT);
+                if (event.key.code == sf::Keyboard::Right)
+                    if (getDirection(snake) != LEFT)
+                        setDirection(snake, RIGHT);
             }
         }
 
-        window.clear();
+        sf::sleep(sf::milliseconds(100));
+        
+        if (play(snake, map) == GAME_OVER){
+            std::cout << "Game Over!" << std::endl;
+            break;
+        }
 
+        window.clear();
+        updateView(window, map);
         window.display();
     }
+
+    destroySnake(snake);
     return 0;
 }

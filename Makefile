@@ -1,4 +1,4 @@
-OBJ = src/main.o
+OBJ = src/main.o src/play.o src/view.o src/snake.o
 
 all: app
 
@@ -10,4 +10,4 @@ app: $(OBJ)
 	./app
 
 clean:
-	rm -f src/*.o%  
+	rm -f src/*.o
