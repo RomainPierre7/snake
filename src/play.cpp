@@ -239,6 +239,7 @@ void autoGame(sf::RenderWindow &window, bool fast){
         }
 
         if (!fast) sf::sleep(sf::milliseconds(120));
+        else sf::sleep(sf::milliseconds(10));
         
         if (play(snake, map, score) == GAME_OVER){
             break;
