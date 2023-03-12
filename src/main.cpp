@@ -17,6 +17,8 @@ int main(){
         return 1;
     }
 
+    srand(time(NULL));
+
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
     int HEIGHT = desktop.height - 200;
     sf::RenderWindow window(sf::VideoMode(HEIGHT, HEIGHT), "Snake");
@@ -28,6 +30,12 @@ int main(){
     switch(menu(window)){
         case PLAY:
             playGame(window);
+            break;
+        case AUTO:
+            autoGame(window, false);
+            break;
+        case AUTO_FAST:
+            autoGame(window, true);
             break;
         case QUIT:
             break;

@@ -61,7 +61,7 @@ int menu(sf::RenderWindow &window){
         return -1;
     sf::Text text;
     text.setFont(font);
-    text.setString("Snake\n\npress Enter to play\npress Escape to quit\n\nBest score: " + std::to_string(bestScore) + "\nPrevious score: " + std::to_string(previousScore));
+    text.setString("Snake\n\npress 'Enter' to play\npress 'A' to auto play\npress 'F' to auto play in fast mode\npress 'Escape' to quit\n\nBest score: " + std::to_string(bestScore) + "\nPrevious score: " + std::to_string(previousScore));
     text.setCharacterSize(50);
     text.setFillColor(sf::Color::White);
     text.setStyle(sf::Text::Bold);
@@ -78,6 +78,12 @@ int menu(sf::RenderWindow &window){
                 }
                 if (event.key.code == sf::Keyboard::Enter){
                     return PLAY;
+                }
+                if (event.key.code == sf::Keyboard::A){
+                    return AUTO;
+                }
+                if (event.key.code == sf::Keyboard::F){
+                    return AUTO_FAST;
                 }
             }
         }

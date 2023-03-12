@@ -15,4 +15,6 @@ int play(struct Snake *snake, std::array<std::array<int, GRID_WIDTH>, GRID_HEIGH
 
 void playGame(sf::RenderWindow &window);
 
+void autoGame(sf::RenderWindow &window, bool fast);
+
 #endif

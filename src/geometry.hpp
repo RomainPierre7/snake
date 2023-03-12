@@ -17,6 +17,8 @@ enum Direction{
 
 #define QUIT 0
 #define PLAY 1
+#define AUTO 2
+#define AUTO_FAST 3
 
 extern int bestScore;
 extern int previousScore;
