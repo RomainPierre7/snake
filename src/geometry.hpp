@@ -8,9 +8,6 @@ enum Direction{
     RIGHT
 };
 
-#define WIDTH 1250
-#define HEIGHT 1250
-
 #define GRID_WIDTH 15
 #define GRID_HEIGHT 15
 

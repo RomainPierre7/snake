@@ -17,7 +17,9 @@ int main(){
         return 1;
     }
 
-    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Snake");
+    sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+    int HEIGHT = desktop.height - 200;
+    sf::RenderWindow window(sf::VideoMode(HEIGHT, HEIGHT), "Snake");
 
     std::ifstream file("data/best_score.txt");
     file >> bestScore;
