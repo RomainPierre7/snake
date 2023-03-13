@@ -14,12 +14,16 @@ enum Direction{
 #define EMPTY 0
 #define SNAKE 1
 #define FOOD 2
-#define PATH 3
 
 #define QUIT 0
 #define PLAY 1
 #define AUTO 2
 #define AUTO_FAST 3
+#define DEMO 4
+#define RESET 5
+
+#define GAME_OVER 0
+#define GAME_CONTINUE 1
 
 extern int bestScore;
 extern int previousScore;

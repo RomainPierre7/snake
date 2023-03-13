@@ -1,4 +1,6 @@
 #include "view.hpp"
+#include "play.hpp"
+#include "demo.hpp"
 
 void updateView(sf::RenderWindow &window, std::array<std::array<int, GRID_WIDTH>, GRID_HEIGHT>& map){
     int caseWidth = window.getSize().x / GRID_WIDTH;
@@ -14,8 +16,6 @@ void updateView(sf::RenderWindow &window, std::array<std::array<int, GRID_WIDTH>
                 rectangle.setFillColor(sf::Color::Green);
             else if (map[i][j] == FOOD)
                 rectangle.setFillColor(sf::Color::Red);
-            else if (map[i][j] == PATH)
-                rectangle.setFillColor(sf::Color::Yellow);
             window.draw(rectangle);
         }
     }
@@ -27,7 +27,7 @@ void pauseGame(sf::RenderWindow &window){
         return;
     sf::Text text;
     text.setFont(font);
-    text.setString("Paused, press Enter to continue");
+    text.setString("Paused, press Enter to resume\n\nPress Esc to quit to menu");
     text.setCharacterSize(50);
     text.setFillColor(sf::Color::White);
     text.setStyle(sf::Text::Bold);
@@ -49,6 +49,28 @@ void pauseGame(sf::RenderWindow &window){
                     }
                     return;
                 }
+                if (event.key.code == sf::Keyboard::Escape){
+                    switch(menu(window)){
+                        case PLAY:
+                            playGame(window);
+                            break;
+                        case AUTO:
+                            autoGame(window, false);
+                            break;
+                        case AUTO_FAST:
+                            autoGame(window, true);
+                            break;
+                        case DEMO:
+                            demoGame(window, true);
+                            break;
+                        case RESET:
+                            resetBestScore();
+                            break;
+                        case QUIT:
+                            break;
+                    }
+                    return;
+                }
             }
         }
         window.clear();
@@ -63,7 +85,7 @@ int menu(sf::RenderWindow &window){
         return -1;
     sf::Text text;
     text.setFont(font);
-    text.setString("Snake\n\npress 'Enter' to play\npress 'A' to auto play\npress 'F' to auto play in fast mode\npress 'Escape' to quit\n\nBest score: " + std::to_string(bestScore) + "\nPrevious score: " + std::to_string(previousScore));
+    text.setString("Snake\n\npress 'Enter' to play\npress 'A' to auto play\npress 'F' to auto play in fast mode\npress 'D' to launch demo mode (50x50, fast bot)\npress 'Escape' to quit\n\nBest score: " + std::to_string(bestScore) + "\nPrevious score: " + std::to_string(previousScore) + "\n\npress 'R' to reset best score");
     text.setCharacterSize(50);
     text.setFillColor(sf::Color::White);
     text.setStyle(sf::Text::Bold);
@@ -86,6 +108,12 @@ int menu(sf::RenderWindow &window){
                 }
                 if (event.key.code == sf::Keyboard::F){
                     return AUTO_FAST;
+                }
+                if (event.key.code == sf::Keyboard::D){
+                    return DEMO;
+                }
+                if (event.key.code == sf::Keyboard::R){
+                    return RESET;
                 }
             }
         }

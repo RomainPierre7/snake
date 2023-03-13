@@ -4,9 +4,6 @@
 #include <array>
 #include <SFML/Graphics.hpp>
 
-#define GAME_OVER 0
-#define GAME_CONTINUE 1
-
 void newFood(std::array<std::array<int, GRID_WIDTH>, GRID_HEIGHT>& map);
 
 bool gameOver(struct Snake *snake, std::array<std::array<int, GRID_WIDTH>, GRID_HEIGHT>& map);
@@ -16,5 +13,7 @@ int play(struct Snake *snake, std::array<std::array<int, GRID_WIDTH>, GRID_HEIGH
 void playGame(sf::RenderWindow &window);
 
 void autoGame(sf::RenderWindow &window, bool fast);
+
+void resetBestScore();
 
 #endif

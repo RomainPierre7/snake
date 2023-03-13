@@ -6,6 +6,7 @@
 #include "snake.hpp"
 #include "play.hpp"
 #include "view.hpp"
+#include "demo.hpp"
 
 int bestScore = 0;
 int previousScore = 0;
@@ -20,8 +21,10 @@ int main(){
     srand(time(NULL));
 
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-    int HEIGHT = desktop.height - 200;
-    sf::RenderWindow window(sf::VideoMode(HEIGHT, HEIGHT), "Snake");
+    int SIDE = desktop.height - 200;
+    int caseWidth = SIDE / GRID_WIDTH;
+    sf::RenderWindow window(sf::VideoMode(caseWidth * GRID_WIDTH, caseWidth * GRID_WIDTH), "Snake");
+    printf("%d, %d\n", window.getSize().x, window.getSize().y);
 
     std::ifstream file("data/best_score.txt");
     file >> bestScore;
@@ -36,6 +39,12 @@ int main(){
             break;
         case AUTO_FAST:
             autoGame(window, true);
+            break;
+        case DEMO:
+            demoGame(window, true);
+            break;
+        case RESET:
+            resetBestScore();
             break;
         case QUIT:
             break;

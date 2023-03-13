@@ -1,4 +1,4 @@
-OBJ = src/main.o src/play.o src/view.o src/snake.o
+OBJ = src/main.o src/play.o src/view.o src/snake.o src/demo.o
 
 all: app
 

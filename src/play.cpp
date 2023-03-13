@@ -5,6 +5,7 @@
 #include "snake.hpp"
 #include "play.hpp"
 #include "view.hpp"
+#include "demo.hpp"
 
 void newFood(std::array<std::array<int, GRID_WIDTH>, GRID_HEIGHT>& map){
     int x = rand() % GRID_WIDTH;
@@ -96,7 +97,7 @@ void playGame(sf::RenderWindow &window){
 
         sf::sleep(sf::milliseconds(120));
         
-        if (play(snake, map, score) == GAME_OVER){
+        if ((play(snake, map, score) == GAME_OVER) || (score >= GRID_HEIGHT * GRID_WIDTH - 1)){
             break;
         }
         window.setTitle("Snake - Score: " + std::to_string(score));
@@ -124,6 +125,12 @@ void playGame(sf::RenderWindow &window){
             break;
         case AUTO_FAST:
             autoGame(window, true);
+            break;
+        case DEMO:
+            demoGame(window, true);
+            break;
+        case RESET:
+            resetBestScore();
             break;
         case QUIT:
             break;
@@ -220,7 +227,7 @@ void autoGame(sf::RenderWindow &window, bool fast){
         if (!fast) sf::sleep(sf::milliseconds(120));
         else sf::sleep(sf::milliseconds(10));
         
-        if (play(snake, map, score) == GAME_OVER){
+        if ((play(snake, map, score) == GAME_OVER) || (score >= GRID_HEIGHT * GRID_WIDTH - 1)){
             break;
         }
         window.setTitle("Snake - Score: " + std::to_string(score));
@@ -249,7 +256,19 @@ void autoGame(sf::RenderWindow &window, bool fast){
         case AUTO_FAST:
             autoGame(window, true);
             break;
+        case DEMO:
+            demoGame(window, true);
+            break;
+        case RESET:
+            resetBestScore();
+            break;
         case QUIT:
             break;
     }
+}
+
+void resetBestScore(){
+    std::ofstream file("data/best_score.txt");
+    file << 0;
+    file.close();
 }
