@@ -166,75 +166,54 @@ void autoGame(sf::RenderWindow &window, bool fast){
         int x_head = head->x;
         int y_head = head->y;
 
-        if (x_head < x_food && getDirection(snake) != LEFT && getDirection(snake) != RIGHT){
-            if ((map[x_head + 1][y_head] != SNAKE) && (x_head < GRID_WIDTH - 1)){
-                setDirection(snake, RIGHT);
-            } else if ((map[x_head][y_head + 1] != SNAKE) && (y_head < GRID_HEIGHT - 1)){
-                setDirection(snake, DOWN);
-            } else if ((map[x_head][y_head - 1] != SNAKE) && (y_head > 0)){
-                setDirection(snake, UP);
-            } else if ((map[x_head - 1][y_head] != SNAKE) && (x_head > 0)){
-                setDirection(snake, LEFT);
+        std::array<std::array<int, GRID_WIDTH>, GRID_HEIGHT> distance = {};
+        for (int i = 0; i < GRID_WIDTH; i++){
+            for (int j = 0; j < GRID_HEIGHT; j++){
+                distance[i][j] = -1;
             }
-        } else if (x_head > x_food && getDirection(snake) != LEFT && getDirection(snake) != RIGHT){
-            if ((map[x_head - 1][y_head] != SNAKE) && (x_head > 0)){
-                setDirection(snake, LEFT);
-            } else if ((map[x_head][y_head + 1] != SNAKE) && (y_head < GRID_HEIGHT - 1)){
-                setDirection(snake, DOWN);
-            } else if ((map[x_head][y_head - 1] != SNAKE) && (y_head > 0)){
-                setDirection(snake, UP);
-            } else if ((map[x_head + 1][y_head] != SNAKE) && (x_head < GRID_WIDTH - 1)){
-                setDirection(snake, RIGHT);
+        }
+        distance[x_food][y_food] = 0;
+
+        int index = 0;
+        while ((distance[x_head][y_head] == -1) && (index < GRID_WIDTH * GRID_HEIGHT)){
+            for (int i = 0; i < GRID_WIDTH; i++){
+                for (int j = 0; j < GRID_HEIGHT; j++){
+                    if (distance[i][j] == index){
+                        if (i + 1 < GRID_WIDTH && distance[i + 1][j] == -1 && ((map[i + 1][j] != SNAKE) || (i + 1 == x_head && j == y_head)))
+                            distance[i + 1][j] = index + 1;
+                        if (i - 1 >= 0 && distance[i - 1][j] == -1 && ((map[i - 1][j] != SNAKE) || (i - 1 == x_head && j == y_head)))
+                            distance[i - 1][j] = index + 1;
+                        if (j + 1 < GRID_HEIGHT && distance[i][j + 1] == -1 && ((map[i][j + 1] != SNAKE) || (i == x_head && j + 1 == y_head)))
+                            distance[i][j + 1] = index + 1;
+                        if (j - 1 >= 0 && distance[i][j - 1] == -1 && ((map[i][j - 1] != SNAKE) || (i == x_head && j - 1 == y_head)))
+                            distance[i][j - 1] = index + 1;
+                    }
+                    
+                }
             }
-        } else if (y_head < y_food && getDirection(snake) != UP && getDirection(snake) != DOWN){
-            if ((map[x_head][y_head + 1] != SNAKE) && (y_head < GRID_HEIGHT - 1)){
-                setDirection(snake, DOWN);
-            } else if ((map[x_head + 1][y_head] != SNAKE) && (x_head < GRID_WIDTH - 1)){
-                setDirection(snake, RIGHT);
-            } else if ((map[x_head - 1][y_head] != SNAKE) && (x_head > 0)){
-                setDirection(snake, LEFT);
-            } else if ((map[x_head][y_head - 1] != SNAKE) && (y_head > 0)){
-                setDirection(snake, UP);
-            }
-        } else if (y_head > y_food && getDirection(snake) != UP && getDirection(snake) != DOWN){
-            if ((map[x_head][y_head - 1] != SNAKE) && (y_head > 0)){
-                setDirection(snake, UP);
-            } else if ((map[x_head + 1][y_head] != SNAKE) && (x_head < GRID_WIDTH - 1)){
-                setDirection(snake, RIGHT);
-            } else if ((map[x_head - 1][y_head] != SNAKE) && (x_head > 0)){
-                setDirection(snake, LEFT);
-            } else if ((map[x_head][y_head + 1] != SNAKE) && (y_head < GRID_HEIGHT - 1)){
-                setDirection(snake, DOWN);
-            }
+            index++;
+        }
+
+        if (index < GRID_WIDTH * GRID_HEIGHT){
+            if (x_head + 1 <= GRID_WIDTH - 1 && distance[x_head + 1][y_head] == distance[x_head][y_head] - 1 && getDirection(snake) != LEFT && getDirection(snake) != RIGHT && distance[x_head + 1][y_head] != -1)
+                    setDirection(snake, RIGHT);
+            else if (x_head - 1 >= 0 && distance[x_head - 1][y_head] == distance[x_head][y_head] - 1 && getDirection(snake) != LEFT && getDirection(snake) != RIGHT && distance[x_head - 1][y_head] != -1)
+                    setDirection(snake, LEFT);
+            else if (y_head + 1 <= GRID_HEIGHT - 1 && distance[x_head][y_head + 1] == distance[x_head][y_head] - 1 && getDirection(snake) != UP && getDirection(snake) != DOWN && distance[x_head][y_head + 1] != -1)
+                    setDirection(snake, DOWN);
+            else if (y_head - 1 >= 0 && distance[x_head][y_head - 1] == distance[x_head][y_head] - 1 && getDirection(snake) != UP && getDirection(snake) != DOWN && distance[x_head][y_head - 1] != -1)
+                    setDirection(snake, UP);
         } else {
-            if (getDirection(snake) == UP){
-                if ((map[x_head][y_head - 1] != SNAKE) && (y_head > 0))
-                    setDirection(snake, UP);
-                else if ((map[x_head + 1][y_head] != SNAKE) && (x_head < GRID_WIDTH - 1))
-                    setDirection(snake, RIGHT);
-                else if ((map[x_head - 1][y_head] != SNAKE) && (x_head > 0))
-                    setDirection(snake, LEFT);
-            } else if (getDirection(snake) == DOWN){
-                if ((map[x_head][y_head + 1] != SNAKE) && (y_head < GRID_HEIGHT - 1))
+            if (getDirection(snake) == LEFT || getDirection(snake) == RIGHT){
+                if (y_head + 1 < GRID_HEIGHT && map[x_head][y_head + 1] != SNAKE)
                     setDirection(snake, DOWN);
-                else if ((map[x_head + 1][y_head] != SNAKE) && (x_head < GRID_WIDTH - 1))
-                    setDirection(snake, RIGHT);
-                else if ((map[x_head - 1][y_head] != SNAKE) && (x_head > 0))
-                    setDirection(snake, LEFT);
-            } else if (getDirection(snake) == LEFT){
-                if ((map[x_head - 1][y_head] != SNAKE) && (x_head > 0))
-                    setDirection(snake, LEFT);
-                else if ((map[x_head][y_head - 1] != SNAKE) && (y_head > 0))
+                else if (y_head - 1 >= 0 && map[x_head][y_head - 1] != SNAKE)
                     setDirection(snake, UP);
-                else if ((map[x_head][y_head + 1] != SNAKE) && (y_head < GRID_HEIGHT - 1))
-                    setDirection(snake, DOWN);
-            } else if (getDirection(snake) == RIGHT){
-                if ((map[x_head + 1][y_head] != SNAKE) && (x_head < GRID_WIDTH - 1))
+            } else {
+                if (x_head + 1 < GRID_WIDTH && map[x_head + 1][y_head] != SNAKE)
                     setDirection(snake, RIGHT);
-                else if ((map[x_head][y_head - 1] != SNAKE) && (y_head > 0))
-                    setDirection(snake, UP);
-                else if ((map[x_head][y_head + 1] != SNAKE) && (y_head < GRID_HEIGHT - 1))
-                    setDirection(snake, DOWN);
+                else if (x_head - 1 >= 0 && map[x_head - 1][y_head] != SNAKE)
+                    setDirection(snake, LEFT);
             }
         }
 

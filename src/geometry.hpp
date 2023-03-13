@@ -14,6 +14,7 @@ enum Direction{
 #define EMPTY 0
 #define SNAKE 1
 #define FOOD 2
+#define PATH 3
 
 #define QUIT 0
 #define PLAY 1

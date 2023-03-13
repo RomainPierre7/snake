@@ -14,6 +14,8 @@ void updateView(sf::RenderWindow &window, std::array<std::array<int, GRID_WIDTH>
                 rectangle.setFillColor(sf::Color::Green);
             else if (map[i][j] == FOOD)
                 rectangle.setFillColor(sf::Color::Red);
+            else if (map[i][j] == PATH)
+                rectangle.setFillColor(sf::Color::Yellow);
             window.draw(rectangle);
         }
     }
