@@ -98,6 +98,7 @@ int menu(sf::RenderWindow &window){
 
             if (event.type == sf::Event::KeyPressed){
                 if (event.key.code == sf::Keyboard::Escape){
+                    window.close();
                     return QUIT;
                 }
                 if (event.key.code == sf::Keyboard::Enter){
