@@ -44,7 +44,7 @@ int main(){
             demoGame(window, true);
             break;
         case RESET:
-            resetBestScore();
+            resetBestScore(window);
             break;
         case QUIT:
             break;

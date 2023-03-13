@@ -14,6 +14,6 @@ void playGame(sf::RenderWindow &window);
 
 void autoGame(sf::RenderWindow &window, bool fast);
 
-void resetBestScore();
+void resetBestScore(sf::RenderWindow &window);
 
 #endif

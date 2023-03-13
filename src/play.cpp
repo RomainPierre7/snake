@@ -130,7 +130,7 @@ void playGame(sf::RenderWindow &window){
             demoGame(window, true);
             break;
         case RESET:
-            resetBestScore();
+            resetBestScore(window);
             break;
         case QUIT:
             break;
@@ -260,15 +260,35 @@ void autoGame(sf::RenderWindow &window, bool fast){
             demoGame(window, true);
             break;
         case RESET:
-            resetBestScore();
+            resetBestScore(window);
             break;
         case QUIT:
             break;
     }
 }
 
-void resetBestScore(){
+void resetBestScore(sf::RenderWindow &window){
     std::ofstream file("data/best_score.txt");
     file << 0;
     file.close();
+    bestScore = 0;
+    switch(menu(window)){
+        case PLAY:
+            playGame(window);
+            break;
+        case AUTO:
+            autoGame(window, false);
+            break;
+        case AUTO_FAST:
+            autoGame(window, true);
+            break;
+        case DEMO:
+            demoGame(window, true);
+            break;
+        case RESET:
+            resetBestScore(window);
+            break;
+        case QUIT:
+            break;
+    }
 }
