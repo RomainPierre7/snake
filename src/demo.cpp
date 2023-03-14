@@ -85,7 +85,6 @@ void demoGame(sf::RenderWindow &window, bool fast){
     int SIDE = desktop.height - 200;
     int caseWidth = SIDE / 50;
     window.setSize(sf::Vector2u(caseWidth * 50 + 40, caseWidth * 50 + 40));
-    printf("%d, %d\n", window.getSize().x, window.getSize().y);
 
     std::array<std::array<int, 50>, 50> map = {};
     struct Snake *snake = createSnake(0, 0, DOWN);
