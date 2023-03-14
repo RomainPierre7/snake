@@ -24,7 +24,6 @@ int main(){
     int SIDE = desktop.height - 200;
     int caseWidth = SIDE / GRID_WIDTH;
     sf::RenderWindow window(sf::VideoMode(caseWidth * GRID_WIDTH, caseWidth * GRID_WIDTH), "Snake");
-    printf("%d, %d\n", window.getSize().x, window.getSize().y);
 
     std::ifstream file("data/best_score.txt");
     file >> bestScore;
